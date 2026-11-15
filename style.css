@@ -371,17 +371,6 @@ body {
     outline: 2px solid #b31521;
     outline-offset: 4px;
 }
-@keyframes cityFlow {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
 @media (prefers-reduced-motion: reduce) {
     .poster-city {
         animation: none;
@@ -1288,21 +1277,6 @@ body textarea::placeholder {
         color: #e3bbeb;
     }
 }
-:root {
-    --neo-red: #d84666;
-    --neo-pink: #ff5fd0;
-    --neo-blue: #6da8ff;
-    --neo-violet: #b37cff;
-
-    --panel-dark: #17131b;
-    --panel-mid: #211a25;
-    --panel-soft: #2a2230;
-
-    --line-soft: rgba(222, 95, 194, 0.34);
-    --line-strong: rgba(118, 146, 255, 0.38);
-
-    --button-text: #fff6fb;
-}
 .tour-poster {
     background:
         radial-gradient(
@@ -1608,14 +1582,15 @@ body :where(
     color: #c65a78;
 }
 body :where(
-    .travel-field input,
-    .travel-field select,
-    .concert-picker summary,
-    .concert-option,
-    .flatpickr-calendar,
-    .flatpickr-time input
+    .travel-planner h2,
+    .trip-last-mile h3,
+    #arrival-details summary,
+    .site-footer p:first-child,
+    .travel-field label,
+    #trip-result strong,
+    #trip-result p
 ) {
-    border-color: rgba(144, 48, 77, 0.34);
+    color: #c65a78;
 }
 .travel-field input,
 .travel-field select,
