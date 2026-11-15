@@ -23,8 +23,7 @@
     venue: "А2",
     address: "Санкт-Петербург, проспект Медиков, 3",
     doorsAt: "2026-12-13T18:00:00+03:00",
-    sourceUrl: "https://without-events.ru/kai_angel",
-    ticketUrl: "https://without-events.ru/kai_angel"
+sourceUrl: "https://without-events.ru/kai_angel"
 },
 {
     city: "Санкт-Петербург",
@@ -32,8 +31,7 @@
     venue: "А2",
     address: "Санкт-Петербург, проспект Медиков, 3",
     doorsAt: "2026-12-14T18:00:00+03:00",
-    sourceUrl: "https://without-events.ru/kai_angel",
-    ticketUrl: "https://without-events.ru/kai_angel"
+sourceUrl: "https://without-events.ru/kai_angel"
 },
     ];
     concerts.sort((a, b) => a.date.localeCompare(b.date));
@@ -183,13 +181,36 @@ venue.after(addressElement);
         sourceLink.rel = "noopener noreferrer";
         source.appendChild(sourceLink);
         item.appendChild(source);
-        const ticketButton = document.createElement("a");
-        ticketButton.href = concert.ticketUrl;
-        ticketButton.className = "ticket-button";
-        ticketButton.textContent = "Посмотреть билеты";
-        ticketButton.target = "_blank";
-        ticketButton.rel = "noopener noreferrer";
-        item.appendChild(ticketButton);
+const ticketLinks = concert.city === "Санкт-Петербург"
+    ? [
+        {
+            name: "Кассир.ру",
+            url: "https://spb.kassir.ru/koncert/kai-angel"
+        },
+        {
+            name: concert.date === "2026-12-13"
+                ? "Яндекс Афиша"
+                : "Организатор · 14 декабря",
+            url: concert.date === "2026-12-13"
+                ? "https://widget.afisha.yandex.ru/w/sessions/ticketsteam-10847@79962451?clientKey=b7f306d1-2780-490d-a69f-2c2573202ac8&regionId=2"
+                : "https://without-events.ru/kaiangel_spb2"
+        }
+    ]
+    : [
+        {
+            name: "Посмотреть билеты",
+            url: concert.ticketUrl
+        }
+    ];
+ticketLinks.forEach(function(ticket) {
+    const ticketButton = document.createElement("a");
+    ticketButton.href = ticket.url;
+    ticketButton.className = "ticket-button";
+    ticketButton.textContent = ticket.name;
+    ticketButton.target = "_blank";
+    ticketButton.rel = "noopener noreferrer";
+    item.appendChild(ticketButton);
+});
         return item;
     }
     concerts.forEach(function(concert) {
