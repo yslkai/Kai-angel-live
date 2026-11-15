@@ -1,0 +1,1748 @@
+@import url("https://fonts.googleapis.com/css2?family=Old+Standard+TT:wght@400;700&display=swap");
+body {
+    background: black;
+    color: white;
+    text-align: center;
+    font-family: "Old Standard TT", Georgia, serif;
+    padding-top: 100px;
+}
+h1 {
+    color: #ff2020;
+    font-size: 48px;
+    letter-spacing: 5px;
+}
+        .concert-card {
+            background: #1a1a1e;
+            border: 1px solid #b91c1c;
+            padding: 20px;
+            border-radius: 16px;
+            max-width: 600px;
+            margin: 30px auto;
+        }
+        .ticket-button {
+        background-color: #b91c1c;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        display: inline-block;     
+        }
+        .ticket-button:hover {
+    box-shadow: 0 0 20px #ff2020;
+}
+.timer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.timer-box {
+    background: #292126;
+    padding: 15px 5px;
+    border-radius: 10px;
+}
+.timer-box span {
+    display: block;
+}
+.timer-box span:first-child { 
+    color:#ff2020;
+    font-size: 32px;
+    font-weight: bold;
+}
+.source-link { 
+    font-size: 12px;
+    color: #999999;
+    margin: 15px 0;
+}
+.source-link a {
+    color: #ff4545;
+}
+.countdown {
+    color: #ff2020;
+    font-size: 20px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+#concert-list .timer-grid {
+    margin-top: 20px;
+}
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    padding: 25px;
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 999;
+    background-color: #0b0610;
+    background-image:
+        linear-gradient(
+            110deg,
+            rgba(255, 18, 42, 0.17) 0%,
+            rgba(255, 0, 178, 0.23) 35%,
+            rgba(0, 104, 255, 0.20) 70%,
+            rgba(255, 18, 42, 0.17) 100%
+        ),
+        url("leopard-fur.png");
+    background-repeat: repeat, repeat;
+    background-size: 350% 350%, 260px 260px;
+    background-position: 0% 50%, 0 0;
+    background-blend-mode: screen, normal;
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    animation: leopardChromatic 18s ease-in-out infinite;
+}
+@keyframes leopardPulse {
+    0% {
+        filter: brightness(1);
+    }
+
+    50% {
+        filter: brightness(0.2);
+    }
+
+    100% {
+        filter: brightness(1);
+    }
+}
+body::after {
+    content: "";
+    position: fixed;
+    inset: 25px;
+    border: 1px solid rgba(255, 30, 50, 0.4);
+    box-shadow:
+        inset 0 0 20px rgba(255, 20, 40, 0.25),
+        0 0 15px rgba(255, 20, 40, 0.3);
+    pointer-events: none;
+    z-index: 998;
+}
+html {
+    overflow: hidden;
+}
+body {
+    margin: 25px;
+    height: calc(100vh - 50px);
+    box-sizing: border-box;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.address-link,
+.address-link:visited {
+    color: #ff3038;
+    text-decoration: none;
+    margin: 15px 0;
+    transition: color 0.3s ease;
+}
+.address-link:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+.source-link a:hover {
+    color: #ffffff;
+}
+.concert-card {
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+}
+.concert-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 25px rgba(255, 32, 32, 0.25);
+}
+@media (max-width: 600px) {
+    body {
+        margin: 12px;
+        padding: 8px 12px 30px;
+        height: calc(100dvh - 24px);
+        box-sizing: border-box;
+        overflow-x: hidden;
+    }
+    body::before {
+        padding: 12px;
+        background-size: 95px 72px;
+    }
+    body::after {
+        inset: 12px;
+    }
+    h1 {
+        font-size: 28px;
+        letter-spacing: 2px;
+        line-height: 1.2;
+    }
+    .concert-card {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 16px 12px;
+        margin: 18px auto;
+    }
+    .concert-card h2 {
+        font-size: 21px;
+        line-height: 1.3;
+    }
+    .timer-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+    .timer-box {
+        min-width: 0;
+        padding: 12px 4px;
+    }
+    .timer-box span:first-child {
+        font-size: 28px;
+    }
+    .address-link {
+        overflow-wrap: anywhere;
+    }
+    .ticket-button {
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+}
+@media (max-width: 600px) {
+    body {
+        scrollbar-width: none;
+    }
+    body::-webkit-scrollbar {
+        display: none;
+    }
+    .ticket-button {
+        display: block;
+        width: 100%;
+        max-width: 280px;
+        margin: 15px auto 0;
+        text-align: center;
+    }
+    .concert-card:hover {
+        transform: none;
+        box-shadow: none;
+    }
+}
+.city-filters {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 25px auto 30px;
+}
+.city-filter {
+    background: #1a1a1e;
+    color: white;
+    border: 1px solid #b91c1c;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: 0.3s;
+}
+.city-filter:hover {
+    background: #722025;
+}
+.city-filter.active {
+    background: #b91c1c;
+    color: white;
+}
+.city-filter:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 3px;
+}
+.concert-card[hidden] {
+    display: none;
+}
+@media (max-width: 600px) {
+    .city-filters {
+        gap: 8px;
+        margin: 20px auto;
+    }
+    .city-filter {
+        font-size: 13px;
+        padding: 10px 12px;
+    }
+}
+#results-count {
+    color: #aaaaaa;
+    font-size: 15px;
+    text-align: center;
+    margin: 0 auto 20px;
+}
+@media (max-width: 600px) {
+    #results-count {
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+}
+.tour-poster {
+    width: 100%;
+    max-width: 860px;
+    box-sizing: border-box;
+    margin: 30px auto;
+    padding: 42px 28px;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(105, 8, 20, 0.42) 0%, rgba(36, 5, 10, 0.82) 28%, #070707 72%, #030303 100%);
+    border: 1.5px solid #b31521;
+    border-radius: 18px;
+    box-shadow:
+        inset 0 0 90px rgba(92, 5, 16, 0.20),
+        0 0 26px rgba(140, 8, 20, 0.10);
+}
+.poster-title {
+    margin: 0;
+    font-family: "Bebas Neue", sans-serif;
+    font-size: clamp(78px, 12vw, 154px);
+    font-weight: 400;
+    line-height: 0.88;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    background: linear-gradient(180deg, #d65c66 0%, #a1111e 26%, #7b0d16 55%, #3e050b 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow:
+        0 1px 0 #1b0205,
+        0 0 14px rgba(120, 12, 23, 0.12),
+        0 10px 24px rgba(0, 0, 0, 0.55);
+}
+.poster-subtitle {
+    margin: 18px 0 34px;
+    color: #f1ece9;
+    font-family: "Orbitron", sans-serif;
+    font-size: clamp(18px, 2.2vw, 28px);
+    font-weight: 700;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.08);
+}
+#poster-dates {
+    display: grid;
+    gap: 18px;
+}
+.poster-date {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 10px 6px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    color: #ffffff;
+    font-family: inherit;
+    font-size: clamp(28px, 4.2vw, 52px);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: 0.03em;
+    text-align: center;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+.poster-city {
+    display: inline-block;
+    font-family: "Bebas Neue", sans-serif;
+    letter-spacing: 0.04em;
+    background: linear-gradient(
+        90deg,
+        #5a0911 0%,
+        #d44557 18%,
+        #230509 36%,
+        #8d101c 52%,
+        #e06a75 74%,
+        #4c0810 100%
+    );
+    background-size: 240% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 0.6px #33050a;
+    text-shadow:
+        0 0 1px rgba(255, 255, 255, 0.03),
+        0 0 12px rgba(120, 10, 22, 0.12);
+    animation: cityFlow 12s ease-in-out infinite;
+}
+.poster-date-value {
+    display: inline-block;
+    margin-left: 0.22em;
+    color: #ece8e5;
+    -webkit-text-fill-color: #ece8e5;
+    font-family: "Orbitron", sans-serif;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-shadow:
+        0 0 10px rgba(255, 255, 255, 0.05),
+        0 0 18px rgba(135, 10, 22, 0.10);
+}
+.poster-date:hover {
+    transform: translateY(-1px);
+    opacity: 0.92;
+}
+.poster-date:focus-visible {
+    outline: 2px solid #b31521;
+    outline-offset: 4px;
+}
+@keyframes cityFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .poster-city {
+        animation: none;
+    }
+    .poster-date {
+        transition: none;
+    }
+}
+@media (max-width: 600px) {
+    .tour-poster {
+        padding: 26px 14px;
+        margin: 20px auto;
+    }
+    .poster-title {
+        font-size: clamp(58px, 18vw, 104px);
+        letter-spacing: 0.10em;
+    }
+    .poster-subtitle {
+        margin: 14px 0 24px;
+        font-size: 13px;
+        letter-spacing: 0.22em;
+    }
+    .poster-date {
+        font-size: clamp(24px, 8vw, 38px);
+        letter-spacing: 0.01em;
+        overflow-wrap: anywhere;
+    }
+}
+.concert-card {
+    scroll-margin-top: 25px;
+}
+.back-to-poster {
+    position: fixed;
+    right: 45px;
+    bottom: 45px;
+    z-index: 997;
+    background: #b91c1c;
+    color: white;
+    border: 1px solid #ff3038;
+    border-radius: 12px;
+    padding: 13px 20px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(255, 32, 32, 0.3);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+.back-to-poster:hover {
+    background: #e02030;
+    box-shadow: 0 0 25px rgba(255, 32, 32, 0.6);
+}
+.back-to-poster:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 3px;
+}
+.back-to-poster[hidden] {
+    display: none;
+}
+@media (max-width: 600px) {
+    .back-to-poster {
+        right: 25px;
+        bottom: 25px;
+        padding: 11px 14px;
+        font-size: 13px;
+    }
+}
+.site-footer {
+    max-width: 850px;
+    margin: 45px auto 20px;
+    padding: 24px 18px;
+    border-top: 1px solid rgba(255, 48, 56, 0.4);
+    color: #999999;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.6;
+}
+.site-footer p {
+    margin: 8px 0;
+}
+.site-footer p:first-child {
+    color: #ff3038;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+@media (max-width: 600px) {
+    .site-footer {
+        margin-top: 30px;
+        padding: 18px 12px 30px;
+        font-size: 12px;
+    }
+}
+.travel-planner {
+    max-width: 850px;
+    margin: 40px auto;
+    padding: 30px;
+    box-sizing: border-box;
+    background: #131014;
+    border: 2px solid #b91c1c;
+    border-radius: 18px;
+}
+.travel-planner h2 {
+    color: #ff3038;
+    font-size: 25px;
+}
+.travel-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 25px;
+    text-align: left;
+}
+.travel-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.travel-field:first-child {
+    grid-column: 1 / -1;
+}
+.travel-field label {
+    color: white;
+    font-weight: bold;
+}
+.travel-field input,
+.travel-field select {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 13px;
+    background: #242026;
+    color: white;
+    border: 1px solid #96313b;
+    border-radius: 9px;
+    font: inherit;
+}
+#trip-build {
+    grid-column: 1 / -1;
+    padding: 14px;
+    background: #b91c1c;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+#trip-build:hover {
+    background: #e02030;
+}
+#trip-build:focus-visible,
+.travel-field input:focus-visible,
+.travel-field select:focus-visible {
+    outline: 2px solid #ff505c;
+    outline-offset: 3px;
+}
+#trip-result {
+    margin-top: 25px;
+    padding: 20px;
+    background: #21151a;
+    border: 1px solid #a52c3a;
+    border-radius: 12px;
+    line-height: 1.6;
+}
+#trip-result > a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 12px 20px;
+    margin: 8px 6px;
+    box-sizing: border-box;
+    background: #b91c1c;
+    color: white;
+    border: 1px solid #ff3038;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+#trip-result > a:visited {
+    color: white;
+}
+#trip-result > a:hover {
+    background: #e02030;
+    box-shadow: 0 0 20px rgba(255, 32, 32, 0.4);
+}
+#trip-result > a:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 3px;
+}
+@media (max-width: 600px) {
+    #trip-result > a {
+        display: flex;
+        width: 100%;
+        margin: 10px 0;
+        text-align: center;
+    }
+}
+@media (max-width: 600px) {
+    .travel-planner {
+        margin: 25px auto;
+        padding: 20px 12px;
+    }
+    .travel-planner h2 {
+        font-size: 20px;
+    }
+    .travel-fields {
+        grid-template-columns: 1fr;
+    }
+}
+.trip-copy {
+    display: block;
+    margin: 18px auto 0;
+    padding: 12px 18px;
+    background: #292126;
+    color: white;
+    border: 1px solid #ff3038;
+    border-radius: 9px;
+    font: inherit;
+    cursor: pointer;
+}
+.trip-copy:hover {
+    background: #51232b;
+}
+.trip-copy:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 3px;
+}
+.trip-last-mile {
+    margin-top: 20px;
+    padding: 16px;
+    background: #181317;
+    border: 1px solid #76303a;
+    border-radius: 12px;
+}
+.trip-last-mile h3 {
+    color: #ff3038;
+    margin: 0 0 12px;
+    font-size: 19px;
+}
+.trip-last-mile p {
+    color: white;
+    margin: 10px 0;
+}
+.trip-last-mile a {
+    overflow-wrap: anywhere;
+}
+#arrival-details summary {
+    color: #ff3038;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 8px 0;
+}
+#arrival-details .travel-field {
+    margin-top: 18px;
+}
+#arrival-route {
+    width: 100%;
+    margin-top: 15px;
+    padding: 13px;
+    background: #b91c1c;
+    color: white;
+    border: none;
+    border-radius: 9px;
+    font: inherit;
+    cursor: pointer;
+}
+#arrival-route:hover {
+    background: #e02030;
+}
+#arrival-route:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 3px;
+}
+#arrival-details .travel-field {
+    margin-top: 18px;
+}
+#arrival-time-result {
+    padding: 15px;
+    margin: 18px 0;
+    background: #292126;
+    color: #ffffff;
+    border-left: 3px solid #ff3038;
+    border-radius: 8px;
+    line-height: 1.6;
+}
+.arrival-time-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 15px;
+    margin-top: 18px;
+}
+@media (max-width: 600px) {
+    .arrival-time-fields {
+        grid-template-columns: 1fr;
+    }
+}
+.arrival-time-fields > .travel-field:first-child {
+    grid-column: auto;
+}
+@media (max-width: 600px) {
+    .arrival-time-fields > .travel-field {
+        width: 100%;
+    }
+}
+#route-reviewed {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    padding: 13px;
+    background: #292126;
+    color: white;
+    border: 1px solid #ff3038;
+    border-radius: 9px;
+    font: inherit;
+    cursor: pointer;
+}
+#route-reviewed:hover {
+    background: #51232b;
+}
+#route-reviewed:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 3px;
+}
+#route-timing {
+    margin-top: 22px;
+}
+#route-reviewed[hidden],
+#route-timing[hidden] {
+    display: none;
+}
+.travel-label {
+    color: white;
+    font-weight: bold;
+}
+#trip-concert[hidden] {
+    display: none;
+}
+.concert-picker {
+    position: relative;
+    width: 100%;
+}
+.concert-picker summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px;
+    background: #242026;
+    color: white;
+    border: 1px solid #96313b;
+    border-radius: 9px;
+    cursor: pointer;
+    text-align: left;
+    list-style: none;
+}
+.concert-picker summary::-webkit-details-marker {
+    display: none;
+}
+.concert-picker summary::after {
+    content: "⌄";
+    font-size: 20px;
+    transition: transform 0.2s;
+}
+.concert-picker[open] summary::after {
+    transform: rotate(180deg);
+}
+.concert-picker summary:focus-visible {
+    outline: 2px solid #ff3038;
+    outline-offset: 3px;
+}
+.concert-picker-options {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    right: 0;
+    z-index: 20;
+    max-height: 250px;
+    overflow-y: auto;
+    padding: 5px;
+    background: #1a171c;
+    border: 1px solid #96313b;
+    border-radius: 10px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+.concert-option {
+    display: block;
+    width: 100%;
+    padding: 13px 12px;
+    background: #242026;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.concert-option + .concert-option {
+    margin-top: 4px;
+}
+.concert-option:hover,
+.concert-option:focus-visible,
+.concert-option[aria-pressed="true"] {
+    background: #b91c1c;
+    color: white;
+}
+.concert-option:focus-visible {
+    outline: 2px solid white;
+    outline-offset: -3px;
+}
+#transport-picker-value {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}
+.transport-option-button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.transport-option-icon {
+    width: 24px;
+    min-width: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    line-height: 1;
+}
+.transport-option-label {
+    display: inline-block;
+}
+.transport-option-button,
+#transport-picker-value {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.transport-icon {
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.transport-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.9;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+#travel-planner .flatpickr-wrapper {
+    display: block;
+    width: 100%;
+}
+.flatpickr-calendar {
+    background: #1b171c;
+    border: 1px solid #b91c1c;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+}
+.flatpickr-months .flatpickr-month,
+.flatpickr-weekdays,
+span.flatpickr-weekday {
+    background: #1b171c;
+    color: #ffffff;
+}
+.flatpickr-current-month,
+.flatpickr-current-month input.cur-year,
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+    color: #ffffff;
+}
+.flatpickr-months .flatpickr-prev-month svg,
+.flatpickr-months .flatpickr-next-month svg {
+    fill: #ffffff;
+}
+.flatpickr-day {
+    color: #ffffff;
+    border-radius: 8px;
+}
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover,
+.flatpickr-day.selected:focus {
+    background: #b91c1c;
+    border-color: #b91c1c;
+    color: white;
+}
+.flatpickr-day:hover,
+.flatpickr-day:focus {
+    background: #76202b;
+    border-color: #76202b;
+    color: white;
+}
+.flatpickr-day.today {
+    border-color: #ff3038;
+}
+.flatpickr-day.flatpickr-disabled {
+    color: #666666;
+}
+.flatpickr-current-month .cur-month {
+    color: #ffffff;
+    font-weight: bold;
+}
+.flatpickr-current-month input.cur-year::selection {
+    background: #b91c1c;
+    color: #ffffff;
+}
+.flatpickr-calendar.hasTime .flatpickr-time {
+    border-top: 1px solid #96313b;
+}
+.flatpickr-time input {
+    color: #ffffff;
+    font-weight: bold;
+}
+.flatpickr-time input:hover,
+.flatpickr-time input:focus {
+    background: #422027;
+    color: #ffffff;
+}
+.flatpickr-time input::selection {
+    background: #b91c1c;
+    color: #ffffff;
+}
+.flatpickr-calendar .flatpickr-time .flatpickr-time-separator {
+    color: #ffffff;
+}
+.tour-poster {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    max-width: 850px;
+    padding: 38px 25px 42px;
+    border: 1px solid #684039;
+    border-radius: 5px;
+    background:
+        radial-gradient(
+            ellipse at 25% 15%,
+            rgba(106, 76, 51, 0.19),
+            transparent 48%
+        ),
+        radial-gradient(
+            ellipse at 85% 75%,
+            rgba(92, 24, 20, 0.16),
+            transparent 52%
+        ),
+        linear-gradient(
+            145deg,
+            #171310 0%,
+            #080808 53%,
+            #100c0b 100%
+        );
+    box-shadow:
+        inset 0 0 75px rgba(0, 0, 0, 0.8),
+        0 0 22px rgba(91, 36, 28, 0.13);
+}
+.tour-poster::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.65;
+    background:
+        repeating-linear-gradient(
+            90deg,
+            transparent 0 3px,
+            rgba(202, 170, 130, 0.025) 4px,
+            transparent 5px
+        ),
+        repeating-linear-gradient(
+            3deg,
+            transparent 0 24px,
+            rgba(198, 151, 105, 0.035) 25px,
+            transparent 26px
+        );
+}
+.tour-poster > * {
+    position: relative;
+    z-index: 1;
+}
+.tour-poster .poster-title {
+    margin: 0;
+    padding: 8px 0 15px;
+    font-family: "Old Standard TT", Georgia, serif;
+    font-size: clamp(55px, 8vw, 104px);
+    font-weight: 700;
+    line-height: 1.02;
+    letter-spacing: 0.065em;
+    text-transform: uppercase;
+    background: none;
+    -webkit-background-clip: border-box;
+    background-clip: border-box;
+    color: #ab9073;
+    -webkit-text-fill-color: #ab9073;
+    -webkit-text-stroke: 0;
+    text-shadow:
+        1px 1px 0 #35251b,
+        0 3px 5px rgba(0, 0, 0, 0.8);
+}
+.tour-poster .poster-subtitle {
+    margin: 18px 0 32px;
+    font-family: "Old Standard TT", Georgia, serif;
+    font-size: clamp(18px, 2.2vw, 25px);
+    font-weight: 400;
+    letter-spacing: 0.16em;
+    color: #ae987e;
+    text-shadow: none;
+}
+.tour-poster #poster-dates {
+    display: grid;
+    gap: 14px;
+    padding-top: 20px;
+    border-top: 1px solid #40312b;
+}
+.tour-poster .poster-date {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 13px 4px;
+    border: none;
+    border-radius: 2px;
+    background: transparent;
+    color: #d0bda4;
+    text-align: center;
+    font-family: "Old Standard TT", Georgia, serif;
+    font-size: clamp(29px, 3.5vw, 43px);
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background-color 0.25s ease;
+}
+.tour-poster .poster-date:hover {
+    background: rgba(124, 48, 37, 0.13);
+    transform: none;
+    opacity: 1;
+}
+.tour-poster .poster-date:focus-visible {
+    outline: 1px solid #c65b49;
+    outline-offset: 2px;
+}
+.tour-poster .poster-city {
+    display: inline;
+    font-family: "Old Standard TT", Georgia, serif;
+    font-size: 1em;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    background: linear-gradient(
+        100deg,
+        #ad7059 0%,
+        #694239 28%,
+        #c08d6a 50%,
+        #714034 76%,
+        #ad7059 100%
+    );
+    background-size: 240% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-text-stroke: 0;
+    text-shadow: none;
+    animation: rustInk 13s ease-in-out infinite;
+}
+.tour-poster .poster-date-value {
+    display: inline;
+    margin-left: 0.12em;
+    font-family: "Old Standard TT", Georgia, serif;
+    font-size: 1em;
+    font-weight: 700;
+    font-style: normal;
+    letter-spacing: 0.02em;
+    color: #d2bfa3;
+    -webkit-text-fill-color: #d2bfa3;
+    text-shadow: 1px 1px 0 #211611;
+}
+@keyframes rustInk {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+@media (max-width: 600px) {
+    .tour-poster {
+        padding: 25px 12px;
+        margin: 20px auto;
+    }
+    .tour-poster .poster-title {
+        font-size: clamp(36px, 10vw, 53px);
+        letter-spacing: 0.025em;
+    }
+    .tour-poster .poster-subtitle {
+        font-size: 14px;
+        letter-spacing: 0.08em;
+        margin: 14px 0 23px;
+    }
+    .tour-poster .poster-date {
+        font-size: clamp(19px, 5.2vw, 27px);
+        padding: 11px 2px;
+        overflow-wrap: anywhere;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .tour-poster .poster-city {
+        animation: none;
+    }
+
+    .tour-poster .poster-date {
+        transition: none;
+    }
+}
+.tour-poster {
+    background:
+        radial-gradient(
+            ellipse at 50% 8%,
+            rgba(96, 14, 29, 0.30),
+            transparent 60%
+        ),
+        linear-gradient(
+            160deg,
+            #130b0f 0%,
+            #080709 55%,
+            #0e080c 100%
+        );
+    border-color: #861e2d;
+    box-shadow:
+        inset 0 0 80px rgba(0, 0, 0, 0.8),
+        0 0 25px rgba(124, 13, 32, 0.15);
+}
+.tour-poster .poster-title {
+    color: #b9535e;
+    -webkit-text-fill-color: #b9535e;
+    text-shadow:
+        1px 1px 0 #420d16,
+        0 3px 3px #080408,
+        0 0 22px rgba(142, 24, 43, 0.24);
+}
+.tour-poster .poster-subtitle {
+    color: #aaa0a5;
+}
+.tour-poster #poster-dates {
+    border-top-color: #64202d;
+}
+.tour-poster .poster-city {
+    background: linear-gradient(
+        100deg,
+        #a93849 0%,
+        #d07179 26%,
+        #7e2334 50%,
+        #c85e6d 75%,
+        #a93849 100%
+    );
+    background-size: 240% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.tour-poster .poster-date-value {
+    color: #d8cecf;
+    -webkit-text-fill-color: #d8cecf;
+    text-shadow: 1px 1px 0 #261118;
+}
+.tour-poster .poster-date:hover {
+    background: rgba(149, 31, 50, 0.15);
+}
+button,
+input,
+select,
+textarea,
+.flatpickr-calendar,
+.flatpickr-calendar input {
+    font-family: "Old Standard TT", Georgia, serif;
+}
+@keyframes leopardChromatic {
+    0%, 100% {
+        background-position: 0% 50%, 0 0;
+        filter: hue-rotate(-7deg) brightness(0.95);
+    }
+    50% {
+        background-position: 100% 50%, 110px 55px;
+        filter: hue-rotate(7deg) brightness(1.08);
+    }
+}
+body::after {
+    border-color: rgba(218, 80, 179, 0.45);
+    box-shadow:
+        inset 0 0 18px rgba(116, 32, 158, 0.22),
+        0 0 14px rgba(40, 115, 255, 0.20);
+}
+@media (max-width: 600px) {
+    body::before {
+        background-size: 350% 350%, 180px 180px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    body::before {
+        animation: none;
+    }
+}
+@keyframes chromaticText {
+    0%, 100% {
+        color: #ff7387;
+    }
+
+    25% {
+        color: #ff83d5;
+    }
+
+    50% {
+        color: #8dbbff;
+    }
+
+    75% {
+        color: #cd94ff;
+    }
+}
+@keyframes chromaticButtonText {
+    0%, 100% {
+        color: #fff0f3;
+    }
+
+    25% {
+        color: #ffd5ee;
+    }
+
+    50% {
+        color: #d5eaff;
+    }
+
+    75% {
+        color: #f0d8ff;
+    }
+}
+@keyframes chromaticGradient {
+    0%, 100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+body :where(
+    h1,
+    h2,
+    h3,
+    p,
+    span,
+    a,
+    label,
+    summary,
+    button,
+    input,
+    select,
+    textarea
+):not(.tour-poster *),
+body #trip-result {
+    animation: chromaticText 18s ease-in-out infinite;
+}
+body :where(
+    h1,
+    .concert-card h2,
+    .timer-box span:first-child,
+    .travel-planner h2,
+    #trip-result h3,
+    .trip-last-mile h3,
+    .site-footer p:first-child
+):not(.tour-poster *) {
+    background-image: linear-gradient(
+        100deg,
+        #ff6478 0%,
+        #ff65c9 25%,
+        #83b6ff 50%,
+        #cf80ff 75%,
+        #ff6478 100%
+    );
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: chromaticGradient 18s ease-in-out infinite;
+}
+body :where(
+    button,
+    button span,
+    .ticket-button,
+    #trip-result > a
+):not(.tour-poster *) {
+    animation: chromaticButtonText 18s ease-in-out infinite;
+}
+body input::placeholder,
+body textarea::placeholder {
+    color: #aaa0bc;
+    opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+    body :where(
+        h1,
+        h2,
+        h3,
+        p,
+        span,
+        a,
+        label,
+        summary,
+        button,
+        input,
+        select,
+        textarea
+    ):not(.tour-poster *),
+    body #trip-result {
+        animation: none;
+        color: #e3bbeb;
+    }
+}
+:root {
+    --neo-red: #d84666;
+    --neo-pink: #ff5fd0;
+    --neo-blue: #6da8ff;
+    --neo-violet: #b37cff;
+
+    --panel-dark: #17131b;
+    --panel-mid: #211a25;
+    --panel-soft: #2a2230;
+
+    --line-soft: rgba(222, 95, 194, 0.34);
+    --line-strong: rgba(118, 146, 255, 0.38);
+
+    --button-text: #fff6fb;
+}
+.tour-poster {
+    background:
+        radial-gradient(
+            ellipse at 14% 52%,
+            rgba(255, 77, 134, 0.16),
+            transparent 42%
+        ),
+        radial-gradient(
+            ellipse at 86% 48%,
+            rgba(76, 131, 255, 0.14),
+            transparent 42%
+        ),
+        radial-gradient(
+            ellipse at 50% 8%,
+            rgba(124, 16, 34, 0.24),
+            transparent 58%
+        ),
+        linear-gradient(
+            160deg,
+            #120b10 0%,
+            #070608 55%,
+            #0e0810 100%
+        );
+    border-color: rgba(191, 83, 144, 0.46);
+    box-shadow:
+        inset 0 0 80px rgba(0, 0, 0, 0.82),
+        0 0 18px rgba(255, 75, 130, 0.10),
+        0 0 24px rgba(80, 130, 255, 0.08);
+}
+.tour-poster::before {
+    opacity: 0.46;
+}
+.tour-poster .poster-title {
+    color: #b88a94;
+    -webkit-text-fill-color: #b88a94;
+    text-shadow:
+        1px 1px 0 #40121b,
+        0 3px 3px rgba(8, 4, 8, 0.95),
+        0 0 18px rgba(255, 86, 150, 0.08),
+        0 0 20px rgba(78, 121, 255, 0.06);
+}
+.tour-poster .poster-subtitle {
+    color: #b6a7b2;
+}
+.tour-poster #poster-dates {
+    border-top-color: rgba(146, 70, 102, 0.45);
+}
+.tour-poster .poster-city {
+    background: linear-gradient(
+        100deg,
+        #a33a52 0%,
+        #d46b9c 25%,
+        #7a2339 50%,
+        #8b76bf 72%,
+        #b14763 100%
+    );
+    background-size: 240% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rustInk 13s ease-in-out infinite;
+}
+.tour-poster .poster-date-value {
+    color: #ded4d8;
+    -webkit-text-fill-color: #ded4d8;
+    text-shadow: 1px 1px 0 #261118;
+}
+.tour-poster .poster-date:hover {
+    background: rgba(171, 65, 111, 0.12);
+}
+.concert-card,
+.travel-planner,
+#trip-result,
+.trip-last-mile,
+.concert-picker-options,
+.flatpickr-calendar {
+    border-color: rgba(197, 84, 152, 0.42) !important;
+    box-shadow:
+        0 0 0 1px rgba(93, 130, 255, 0.08),
+        0 0 22px rgba(255, 76, 138, 0.06),
+        0 0 18px rgba(75, 126, 255, 0.05);
+}
+body::after {
+    border-color: rgba(206, 97, 185, 0.42);
+    box-shadow:
+        inset 0 0 18px rgba(160, 70, 200, 0.16),
+        0 0 16px rgba(76, 127, 255, 0.14);
+}
+.ticket-button,
+#trip-build,
+#trip-result > a,
+#arrival-route,
+.back-to-poster,
+.city-filter.active {
+    background: linear-gradient(
+        90deg,
+        rgba(156, 34, 69, 0.96) 0%,
+        rgba(193, 48, 119, 0.96) 45%,
+        rgba(90, 82, 210, 0.94) 100%
+    ) !important;
+    color: var(--button-text) !important;
+    border: 1px solid rgba(255, 182, 229, 0.28) !important;
+    box-shadow:
+        0 0 14px rgba(255, 83, 160, 0.16),
+        0 0 18px rgba(77, 118, 255, 0.10);
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease,
+        filter 0.25s ease;
+}
+.ticket-button:hover,
+#trip-build:hover,
+#trip-result > a:hover,
+#arrival-route:hover,
+.back-to-poster:hover,
+.city-filter.active:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+    box-shadow:
+        0 0 18px rgba(255, 90, 170, 0.22),
+        0 0 24px rgba(90, 125, 255, 0.16);
+}
+.city-filter,
+.trip-copy,
+#route-reviewed {
+    background: linear-gradient(
+        180deg,
+        rgba(41, 32, 47, 0.96) 0%,
+        rgba(29, 24, 35, 0.96) 100%
+    );
+    color: #f4edf8;
+    border: 1px solid rgba(195, 88, 160, 0.34);
+}
+.city-filter:hover,
+.trip-copy:hover,
+#route-reviewed:hover {
+    background: linear-gradient(
+        180deg,
+        rgba(57, 38, 67, 0.96) 0%,
+        rgba(39, 28, 48, 0.96) 100%
+    );
+}
+.travel-field input,
+.travel-field select,
+.concert-picker summary,
+.concert-option,
+.flatpickr-calendar,
+.flatpickr-time input {
+    border-color: rgba(182, 88, 149, 0.34);
+}
+.concert-picker summary,
+.travel-field input,
+.travel-field select {
+    background: #241e2a;
+}
+.concert-option:hover,
+.concert-option:focus-visible,
+.concert-option[aria-pressed="true"] {
+    background: linear-gradient(
+        90deg,
+        rgba(157, 34, 69, 0.95) 0%,
+        rgba(198, 48, 123, 0.95) 50%,
+        rgba(92, 82, 209, 0.92) 100%
+    );
+    color: #fff8fc;
+}
+.flatpickr-calendar {
+    background: #1c171f;
+}
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover,
+.flatpickr-day.selected:focus {
+    background: linear-gradient(
+        135deg,
+        #b23867 0%,
+        #c94ec1 50%,
+        #5c6fff 100%
+    );
+    border-color: transparent;
+    color: #ffffff;
+}
+.flatpickr-day:hover,
+.flatpickr-day:focus {
+    background: rgba(133, 55, 115, 0.30);
+    border-color: rgba(133, 55, 115, 0.30);
+}
+.travel-planner h2,
+.trip-last-mile h3,
+#arrival-details summary,
+.site-footer p:first-child {
+    color: #f18fc9;
+}
+@media (max-width: 600px) {
+    .ticket-button,
+    #trip-build,
+    #trip-result > a,
+    #arrival-route,
+    .back-to-poster,
+    .city-filter.active {
+        box-shadow:
+            0 0 12px rgba(255, 88, 163, 0.14),
+            0 0 14px rgba(82, 122, 255, 0.10);
+    }
+}
+:root {
+    --neo-red: #8f1730;
+    --neo-crimson: #b42343;
+    --neo-wine: #5f1123;
+    --neo-pink: #c44b8d;
+    --neo-blue: #4b6ee6;
+    --neo-violet: #7e58d8;
+
+    --panel-dark: #161116;
+    --panel-mid: #1d151c;
+    --panel-soft: #261b24;
+
+    --line-soft: rgba(180, 61, 106, 0.34);
+    --line-strong: rgba(84, 103, 216, 0.26);
+
+    --button-text: #fff6fa;
+}
+.concert-card,
+.travel-planner,
+#trip-result,
+.trip-last-mile,
+.concert-picker-options,
+.flatpickr-calendar {
+    border-color: rgba(154, 39, 65, 0.50) !important;
+    box-shadow:
+        0 0 0 1px rgba(88, 101, 210, 0.06),
+        0 0 18px rgba(132, 20, 44, 0.18),
+        0 0 10px rgba(49, 19, 28, 0.28);
+}
+body::after {
+    border-color: rgba(155, 42, 70, 0.46);
+    box-shadow:
+        inset 0 0 18px rgba(102, 21, 41, 0.20),
+        0 0 14px rgba(74, 96, 210, 0.08);
+}
+.ticket-button,
+#trip-build,
+#trip-result > a,
+#arrival-route,
+.back-to-poster,
+.city-filter.active {
+    background: linear-gradient(
+        90deg,
+        #64111f 0%,
+        #8b1830 38%,
+        #a02b4f 62%,
+        #5f469f 82%,
+        #4355b8 100%
+    ) !important;
+    color: var(--button-text) !important;
+    border: 1px solid rgba(255, 197, 222, 0.18) !important;
+    box-shadow:
+        0 0 12px rgba(138, 21, 48, 0.24),
+        0 0 16px rgba(69, 85, 184, 0.10);
+}
+.ticket-button:hover,
+#trip-build:hover,
+#trip-result > a:hover,
+#arrival-route:hover,
+.back-to-poster:hover,
+.city-filter.active:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.06);
+    box-shadow:
+        0 0 15px rgba(156, 24, 56, 0.28),
+        0 0 18px rgba(72, 91, 198, 0.12);
+}
+.city-filter,
+.trip-copy,
+#route-reviewed {
+    background: linear-gradient(
+        180deg,
+        rgba(33, 24, 31, 0.98) 0%,
+        rgba(23, 18, 23, 0.98) 100%
+    );
+    color: #f3e9ee;
+    border: 1px solid rgba(137, 42, 72, 0.34);
+}
+.city-filter:hover,
+.trip-copy:hover,
+#route-reviewed:hover {
+    background: linear-gradient(
+        180deg,
+        rgba(48, 30, 40, 0.98) 0%,
+        rgba(33, 22, 31, 0.98) 100%
+    );
+}
+body :where(
+    .travel-planner h2,
+    .trip-last-mile h3,
+    #arrival-details summary,
+    .site-footer p:first-child,
+    .travel-field label,
+    #trip-result strong,
+    #trip-result p,
+    .concert-source,
+    .concert-count
+) {
+    color: #c65a78;
+}
+body :where(
+    .travel-field input,
+    .travel-field select,
+    .concert-picker summary,
+    .concert-option,
+    .flatpickr-calendar,
+    .flatpickr-time input
+) {
+    border-color: rgba(144, 48, 77, 0.34);
+}
+.travel-field input,
+.travel-field select,
+.concert-picker summary {
+    background: #221920;
+    color: #f2e8ec;
+}
+.concert-option:hover,
+.concert-option:focus-visible,
+.concert-option[aria-pressed="true"] {
+    background: linear-gradient(
+        90deg,
+        rgba(101, 17, 33, 0.96) 0%,
+        rgba(145, 29, 57, 0.96) 52%,
+        rgba(78, 71, 173, 0.90) 100%
+    );
+    color: #fff9fb;
+}
+.flatpickr-calendar {
+    background: #181218;
+}
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover,
+.flatpickr-day.selected:focus {
+    background: linear-gradient(
+        135deg,
+        #8d1d39 0%,
+        #b04076 56%,
+        #4d63d8 100%
+    );
+    border-color: transparent;
+    color: #ffffff;
+}
+.flatpickr-day:hover,
+.flatpickr-day:focus {
+    background: rgba(113, 33, 61, 0.28);
+    border-color: rgba(113, 33, 61, 0.28);
+}
+.tour-poster {
+    background:
+        radial-gradient(
+            ellipse at 14% 50%,
+            rgba(134, 19, 44, 0.22),
+            transparent 42%
+        ),
+        radial-gradient(
+            ellipse at 82% 46%,
+            rgba(70, 84, 190, 0.10),
+            transparent 40%
+        ),
+        radial-gradient(
+            ellipse at 50% 10%,
+            rgba(78, 8, 24, 0.24),
+            transparent 55%
+        ),
+        linear-gradient(
+            160deg,
+            #110b10 0%,
+            #070608 55%,
+            #0d080d 100%
+        );
+    border-color: rgba(143, 39, 68, 0.44);
+    box-shadow:
+        inset 0 0 80px rgba(0, 0, 0, 0.84),
+        0 0 18px rgba(120, 16, 40, 0.12),
+        0 0 18px rgba(62, 78, 178, 0.06);
+}
+.tour-poster .poster-title {
+    color: #9c5d61;
+    -webkit-text-fill-color: #9c5d61;
+    text-shadow:
+        1px 1px 0 #341018,
+        0 3px 3px rgba(8, 4, 8, 0.95),
+        0 0 10px rgba(129, 28, 45, 0.12);
+}
+.tour-poster .poster-subtitle {
+    color: #bba9ac;
+}
+.tour-poster #poster-dates {
+    border-top-color: rgba(116, 41, 56, 0.40);
+}
+.tour-poster .poster-city {
+    background: linear-gradient(
+        100deg,
+        #8d2a3f 0%,
+        #bc4f69 28%,
+        #672032 55%,
+        #7e4f9f 76%,
+        #9f334f 100%
+    );
+    background-size: 240% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.tour-poster .poster-date-value {
+    color: #dfd7d4;
+    -webkit-text-fill-color: #dfd7d4;
+    text-shadow: 1px 1px 0 #261117;
+}

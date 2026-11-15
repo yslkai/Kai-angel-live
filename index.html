@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>KAI ANGEL LIVE</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/themes/dark.css">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="KAI ANGEL LIVE — афиша концертов Kai Angel в Москве и Санкт-Петербурге. Даты, площадки, обратный отсчёт и ссылки на билеты.">
+<meta name="theme-color" content="#09090b">
+</head>
+<body>
+    <h1>KAI ANGEL LIVE</h1>
+    <p>Предстоящие концерты Kai Angel</p>
+    <section class="tour-poster">
+    <h2 class="poster-title">KAI ANGEL</h2>
+    <p class="poster-subtitle">СТОЛИЦЫ · 2026</p>
+    <div id="poster-dates"></div>
+</section>
+    <div class="city-filters">
+        <button type="button" class="city-filter active" data-city="all">Все концерты</button>
+        <button type="button" class="city-filter" data-city="Москва">Москва</button>
+        <button type="button" class="city-filter" data-city="Санкт-Петербург">Санкт-Петербург</button>
+    </div>
+    <p id="results-count" aria-live="polite"></p>
+    <div id="concert-list">
+        <p>Здесь появится афиша концертов</p>
+    </div>
+<section class="travel-planner" id="travel-planner">
+    <h2>КАК ДОБРАТЬСЯ ДО КОНЦЕРТА</h2>
+    <p>Выбери город, концерт и подходящий транспорт.</p>
+    <div class="travel-fields">
+        <div class="travel-field">
+            <label for="trip-origin">Откуда едешь?</label>
+            <input
+                id="trip-origin"
+                type="text"
+                placeholder="Например, Старый Оскол"
+                autocomplete="address-level2">          
+        </div>  
+<div class="travel-field">
+    <span id="trip-concert-label" class="travel-label">
+        Какой концерт?
+    </span>
+    <select id="trip-concert" hidden></select>
+    <details id="concert-picker" class="concert-picker">
+        <summary aria-labelledby="trip-concert-label concert-picker-value">
+            <span id="concert-picker-value">Выбери концерт</span>
+        </summary>
+        <div id="concert-picker-options" class="concert-picker-options"></div>
+    </details>
+</div>
+<div class="travel-field">
+    <label for="trip-date">Дата отправления</label>
+    <input id="trip-date" type="date" required>
+</div>
+<div class="travel-field">
+    <span id="trip-transport-label" class="travel-label">
+        Какой транспорт?
+    </span>
+    <select id="trip-transport" hidden>
+        <option value="train">Поезд</option>
+        <option value="bus">Автобус</option>
+        <option value="plane">Самолёт</option>
+    </select>
+    <details id="transport-picker" class="concert-picker">
+        <summary aria-labelledby="trip-transport-label transport-picker-value">
+            <span id="transport-picker-value">Поезд</span>
+        </summary>
+        <div id="transport-picker-options" class="concert-picker-options"></div>
+    </details>
+</div>
+        <button id="trip-build" type="button">
+            Показать поездку
+        </button>
+    </div>
+    <div id="trip-result" hidden></div>
+<details id="arrival-details" class="trip-last-mile" hidden>
+    <summary>Билет выбран? Построить маршрут до площадки</summary>
+    <div class="travel-field">
+        <label for="trip-arrival">
+            На какой вокзал или аэропорт прибываешь?
+        </label>
+        <input
+            id="trip-arrival"
+            type="text"
+            placeholder="Например, Восточный вокзал"
+        >
+    </div>
+    <button id="arrival-route" type="button">
+        Посмотреть маршрут в Яндекс Картах
+    </button>
+    <button id="route-reviewed" type="button" hidden>
+        Я посмотрел маршрут
+    </button>
+    <div id="route-timing" hidden>
+        <div class="travel-field">
+            <label for="arrival-time">
+                Когда прибываешь в город? (МСК)
+            </label>
+            <input id="arrival-time" type="datetime-local">
+        </div>
+        <div class="arrival-time-fields">
+            <div class="travel-field">
+                <label for="arrival-travel-minutes">
+                    Дорога до площадки (мин.)
+                </label>
+                <input
+                    id="arrival-travel-minutes"
+                    type="number"
+                    min="0"
+                    step="5"
+                    value="60"
+                >
+            </div>
+            <div class="travel-field">
+                <label for="arrival-buffer-minutes">
+                    Запас времени (мин.)
+                </label>
+                <input
+                    id="arrival-buffer-minutes"
+                    type="number"
+                    min="0"
+                    step="5"
+                    value="30"
+                >
+            </div>
+        </div>
+        <p id="arrival-time-result" aria-live="polite"></p>
+    </div>
+</details>
+</details>
+</section>
+<footer class="site-footer">
+    <p>KAI ANGEL LIVE · 2026</p>
+    <p>Неофициальный фанатский проект.</p>
+    <p>Даты концертов могут измениться. Проверяйте актуальную информацию по ссылкам на источники.</p>
+</footer>
+<button id="back-to-poster" class="back-to-poster" type="button" hidden>
+    ↑ К афише
+</button>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/l10n/ru.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
+      
