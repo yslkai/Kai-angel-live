@@ -2,3 +2,5 @@
 /assets/**/source-manifest.json
 /ROUTING-CHECK.md
 /tests/
+/SECURITY-AUDIT.md
+/SECURITY-FIXES.md

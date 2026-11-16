@@ -1,0 +1,12 @@
+# Local verification files must never be included in the GitHub Pages output.
+exclude:
+  - tests
+  - design-v1.1-assets
+  - ROUTING-CHECK.md
+  - SECURITY-AUDIT.md
+  - SECURITY-FIXES.md
+  - assets/concerts/source-manifest.json
+  - assets/detail/source-manifest.json
+  - assets/frame/source-manifest.json
+  - assets/hero/source-manifest.json
+  - assets/print/source-manifest.json

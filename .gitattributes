@@ -1,0 +1,2 @@
+# Preserve the original upstream bytes and provenance hashes on Windows checkouts.
+vendor/flatpickr/4.6.13/** -text
