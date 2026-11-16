@@ -14,12 +14,42 @@
 </head>
 <body>
     <h1>KAI ANGEL LIVE</h1>
-    <p>Предстоящие концерты Kai Angel</p>
-    <section class="tour-poster">
-    <h2 class="poster-title">KAI ANGEL</h2>
-    <p class="poster-subtitle">СТОЛИЦЫ · 2026</p>
-    <div id="poster-dates"></div>
-</section>
+    <p class="site-intro">Предстоящие концерты Kai Angel</p>
+    <section class="tour-poster" aria-labelledby="poster-title">
+        <div class="poster-heading">
+            <h2 class="poster-title" id="poster-title" tabindex="-1"><span>KAI</span> <span>ANGEL</span></h2>
+            <picture class="poster-portrait">
+                <img src="assets/hero/kai-main-720.webp"
+                    srcset="assets/hero/kai-main-360.webp 360w, assets/hero/kai-main-720.webp 720w, assets/hero/kai-main-1122.webp 1122w"
+                    sizes="(max-width: 600px) 55vw, (max-width: 1010px) 45vw, 440px"
+                    width="720" height="900"
+                    alt="Kai Angel с гитарой"
+                    fetchpriority="high" decoding="async">
+            </picture>
+            <p class="poster-subtitle"><span>СТОЛИЦЫ</span><span>2026</span></p>
+        </div>
+        <div id="poster-dates"></div>
+        <p class="poster-edition">KAI ANGEL LIVE / FAN EDITION / 2026</p>
+    </section>
+    <section class="concert-spread" aria-labelledby="concerts-title">
+        <p class="spread-kicker">KAI ANGEL LIVE / FAN EDITION</p>
+        <h2 class="spread-title" id="concerts-title">
+            <span>КОНЦЕРТЫ</span>
+            <span class="spread-year">/ 2026</span>
+        </h2>
+        <picture class="spread-cutout">
+            <img src="assets/concerts/kai-side-720.webp"
+                srcset="assets/concerts/kai-side-360.webp 360w, assets/concerts/kai-side-720.webp 720w, assets/concerts/kai-side-1086.webp 1086w"
+                sizes="(max-width: 600px) calc(51.6vw - 25px), (max-width: 1010px) calc(45.6vw - 23px), 438px"
+                width="720" height="960"
+                alt="Kai Angel с электрогитарой в руках"
+                loading="lazy" decoding="async">
+        </picture>
+        <div class="spread-note">
+            <p class="spread-cities">Москва /<br>Санкт-Петербург</p>
+            <p class="spread-message">Сохрани дату.<br>Увидимся у сцены.</p>
+        </div>
+    </section>
     <div class="city-filters">
         <button type="button" class="city-filter active" data-city="all">Все концерты</button>
         <button type="button" class="city-filter" data-city="Москва">Москва</button>
@@ -29,121 +59,109 @@
     <div id="concert-list">
         <p>Здесь появится афиша концертов</p>
     </div>
-<section class="travel-planner" id="travel-planner">
-    <h2>КАК ДОБРАТЬСЯ ДО КОНЦЕРТА</h2>
-    <p>Выбери город, концерт и подходящий транспорт.</p>
-    <div class="travel-fields">
-        <div class="travel-field">
-            <label for="trip-origin">Откуда едешь?</label>
-            <input
-                id="trip-origin"
-                type="text"
-                placeholder="Например, Старый Оскол"
-                autocomplete="address-level2">          
-        </div>  
-<div class="travel-field">
-    <span id="trip-concert-label" class="travel-label">
-        Какой концерт?
-    </span>
-    <select id="trip-concert" hidden></select>
-    <details id="concert-picker" class="concert-picker">
-        <summary aria-labelledby="trip-concert-label concert-picker-value">
-            <span id="concert-picker-value">Выбери концерт</span>
-        </summary>
-        <div id="concert-picker-options" class="concert-picker-options"></div>
-    </details>
-</div>
-<div class="travel-field">
-    <label for="trip-date">Дата отправления</label>
-    <input id="trip-date" type="date" required>
-</div>
-<div class="travel-field">
-    <span id="trip-transport-label" class="travel-label">
-        Какой транспорт?
-    </span>
-    <select id="trip-transport" hidden>
-        <option value="train">Поезд</option>
-        <option value="bus">Автобус</option>
-        <option value="plane">Самолёт</option>
-    </select>
-    <details id="transport-picker" class="concert-picker">
-        <summary aria-labelledby="trip-transport-label transport-picker-value">
-            <span id="transport-picker-value">Поезд</span>
-        </summary>
-        <div id="transport-picker-options" class="concert-picker-options"></div>
-    </details>
-</div>
-        <button id="trip-build" type="button">
-            Показать поездку
-        </button>
+    <div class="poster-return">
+        <button id="back-to-poster" class="back-to-poster" type="button" hidden>↑ К афише</button>
     </div>
-    <div id="trip-result" hidden></div>
-<details id="arrival-details" class="trip-last-mile" hidden>
-    <summary>Билет выбран? Построить маршрут до площадки</summary>
-    <div class="travel-field">
-        <label for="trip-arrival">
-            На какой вокзал или аэропорт прибываешь?
-        </label>
-        <input
-            id="trip-arrival"
-            type="text"
-            placeholder="Например, Восточный вокзал"
-        >
-    </div>
-    <button id="arrival-route" type="button">
-        Посмотреть маршрут в Яндекс Картах
-    </button>
-    <button id="route-reviewed" type="button" hidden>
-        Я посмотрел маршрут
-    </button>
-    <div id="route-timing" hidden>
-        <div class="travel-field">
-            <label for="arrival-time">
-                Когда прибываешь в город? (МСК)
-            </label>
-            <input id="arrival-time" type="datetime-local">
-        </div>
-        <div class="arrival-time-fields">
+    <figure class="detail-fragment">
+        <picture class="detail-fragment-photo">
+            <img src="assets/detail/kai-detail-840.webp"
+                srcset="assets/detail/kai-detail-420.webp 420w, assets/detail/kai-detail-840.webp 840w"
+                sizes="(max-width: 600px) calc(100vw - 48px), 408px"
+                width="840" height="599"
+                alt="Деталь образа Kai Angel: блестящая рубашка, цепочки, кольца и татуированные руки"
+                loading="lazy" decoding="async">
+        </picture>
+    </figure>
+<section class="travel-planner" id="travel-planner" aria-labelledby="roadbook-title">
+    <header class="roadbook-heading">
+        <p class="roadbook-kicker">TOUR ROADBOOK / 2026</p>
+        <h2 id="roadbook-title">Планировщик<br>поездки</h2>
+        <p class="roadbook-intro">Выбери концерт, дату и транспорт.<br>Сохрани поездку и проверь дорогу до площадки.</p>
+    </header>
+    <div class="roadbook-form">
+        <h3 class="roadbook-section-title">Маршрут и дата</h3>
+        <div class="travel-fields">
             <div class="travel-field">
-                <label for="arrival-travel-minutes">
-                    Дорога до площадки (мин.)
-                </label>
-                <input
-                    id="arrival-travel-minutes"
-                    type="number"
-                    min="0"
-                    step="5"
-                    value="60"
-                >
+                <label for="trip-origin">Откуда едешь?</label>
+                <input id="trip-origin" type="text" placeholder="Например, Старый Оскол" autocomplete="address-level2">
             </div>
             <div class="travel-field">
-                <label for="arrival-buffer-minutes">
-                    Запас времени (мин.)
-                </label>
-                <input
-                    id="arrival-buffer-minutes"
-                    type="number"
-                    min="0"
-                    step="5"
-                    value="30"
-                >
+                <span id="trip-concert-label" class="travel-label">Какой концерт?</span>
+                <select id="trip-concert" hidden></select>
+                <details id="concert-picker" class="concert-picker">
+                    <summary aria-labelledby="trip-concert-label concert-picker-value">
+                        <span id="concert-picker-value">Выбери концерт</span>
+                    </summary>
+                    <div id="concert-picker-options" class="concert-picker-options"></div>
+                </details>
+            </div>
+            <div class="travel-field">
+                <label for="trip-date">Дата отправления</label>
+                <input id="trip-date" type="date" required>
+            </div>
+            <div class="travel-field">
+                <span id="trip-transport-label" class="travel-label">Какой транспорт?</span>
+                <select id="trip-transport" hidden>
+                    <option value="train">Поезд</option>
+                    <option value="bus">Автобус</option>
+                    <option value="plane">Самолёт</option>
+                </select>
+                <details id="transport-picker" class="concert-picker">
+                    <summary aria-labelledby="trip-transport-label transport-picker-value">
+                        <span id="transport-picker-value">Поезд</span>
+                    </summary>
+                    <div id="transport-picker-options" class="concert-picker-options"></div>
+                </details>
             </div>
         </div>
-        <p id="arrival-time-result" aria-live="polite"></p>
+        <div class="roadbook-submit">
+            <p>Билеты на транспорт и карты откроются в отдельных вкладках.</p>
+            <button id="trip-build" type="button">Составить маршрутный лист</button>
+        </div>
     </div>
-</details>
+    <div id="trip-result" aria-live="polite" hidden></div>
+    <details id="arrival-details" class="trip-last-mile" hidden>
+        <summary>От вокзала или аэропорта до площадки</summary>
+        <p id="arrival-reference" class="roadbook-reference"></p>
+        <div class="travel-field">
+            <label for="trip-arrival">На какой вокзал или аэропорт прибываешь?</label>
+            <input id="trip-arrival" type="text" placeholder="Название вокзала или аэропорта из билета" aria-describedby="arrival-error">
+            <p id="arrival-error" class="roadbook-error" role="alert" hidden>Укажи вокзал или аэропорт прибытия.</p>
+            <p id="arrival-point" class="roadbook-reference" role="status" hidden></p>
+        </div>
+        <div class="arrival-actions">
+            <button id="arrival-route" type="button">Посмотреть маршрут в Яндекс Картах</button>
+            <button id="route-reviewed" type="button" hidden>Я посмотрел маршрут</button>
+        </div>
+        <div id="route-timing" hidden>
+            <div class="travel-field">
+                <label for="arrival-time">Когда прибываешь в город? (МСК)</label>
+                <input id="arrival-time" type="datetime-local" aria-describedby="arrival-reference">
+            </div>
+            <div class="arrival-time-fields">
+                <div class="travel-field">
+                    <label for="arrival-travel-minutes">Дорога до площадки (мин.)</label>
+                    <input id="arrival-travel-minutes" type="number" min="0" step="5" value="60">
+                </div>
+                <div class="travel-field">
+                    <label for="arrival-buffer-minutes">Запас времени (мин.)</label>
+                    <input id="arrival-buffer-minutes" type="number" min="0" step="5" value="30">
+                </div>
+            </div>
+            <p id="arrival-time-result" aria-live="polite"></p>
+        </div>
+    </details>
 </section>
 <footer class="site-footer">
     <p>KAI ANGEL LIVE · 2026</p>
-    <p>Неофициальный фанатский проект.</p>
+    <p>KAI ANGEL LIVE — неофициальный фанатский проект. Не связан с артистом, его командой и организаторами концертов.</p>
+    <p>Источник фотографий: <a href="https://www.instagram.com/p/DbumRSAFJqF/" target="_blank" rel="noopener noreferrer">Instagram @kai4ngel</a>.</p>
+    <p>По вопросам использования материалов: <a href="https://github.com/yslkai/Kai-angel-live/issues" target="_blank" rel="noopener noreferrer">GitHub Issues</a>.</p>
     <p>Даты концертов могут измениться. Проверяйте актуальную информацию по ссылкам на источники.</p>
 </footer>
-<button id="back-to-poster" class="back-to-poster" type="button" hidden>
-    ↑ К афише
-</button>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/l10n/ru.js"></script>
+<script src="arrival-routing.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
-      

@@ -59,12 +59,11 @@ dateElement.addEventListener("click", function() {
 if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     card.animate(
         [
-            { boxShadow: "0 0 0 rgba(255, 32, 32, 0)" },
-            { boxShadow: "0 0 35px rgba(255, 32, 32, 0.8)" },
-            { boxShadow: "0 0 0 rgba(255, 32, 32, 0)" }
+            { opacity: 0.65 },
+            { opacity: 1 }
         ],
         {
-            duration: 1600,
+            duration: 350,
             easing: "ease-in-out"
         }
     );
@@ -81,44 +80,96 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         day: "2-digit",
         month: "2-digit"
     });
-    dateSpan.textContent = " · " + formattedDate;
+    dateSpan.textContent = formattedDate;
+    dateElement.setAttribute("aria-label",
+        `${concert.city}, ${formattedDate}.${concert.date.slice(0, 4)} — перейти к концерту`
+    );
     dateElement.append(citySpan, dateSpan);
     posterDates.appendChild(dateElement);
 });
     const concertList = document.getElementById("concert-list");
     concertList.textContent = "";
     function renderConcertCard(concert) {
-        const item = document.createElement("div");
+        const item = document.createElement("article");
         item.className = "concert-card";
         item.dataset.city = concert.city;
         item.id = "concert-" + concert.date;
+        const formattedDate = new Date(concert.date + "T12:00:00")
+            .toLocaleDateString("ru-RU", {
+                day: "numeric",
+                month: "long",
+                year: "numeric"
+            });
+        const dateBlock = document.createElement("div");
+        dateBlock.className = "concert-date-block";
+        const dateLabel = document.createElement("p");
+        dateLabel.className = "concert-date-label";
+        dateLabel.textContent = "Дата концерта";
+        const date = document.createElement("time");
+        date.className = "concert-date";
+        date.dateTime = concert.date;
+        const day = document.createElement("span");
+        day.className = "concert-date-day";
+        day.textContent = concert.date.slice(8, 10);
+        const month = document.createElement("span");
+        month.className = "concert-date-month";
+        month.textContent = new Date(concert.date + "T12:00:00")
+            .toLocaleDateString("ru-RU", { day: "numeric", month: "long" })
+            .replace(/^\d+\s+/, "");
+        const year = document.createElement("span");
+        year.className = "concert-date-year";
+        year.textContent = concert.date.slice(0, 4);
+        date.append(day, month, year);
+        dateBlock.append(dateLabel, date);
+        const details = document.createElement("div");
+        details.className = "concert-details";
+        const kicker = document.createElement("p");
+        kicker.className = "concert-kicker";
+        kicker.textContent = "KAI ANGEL / LIVE";
+        const notice = document.createElement("p");
+        notice.className = "concert-notice";
+        notice.textContent = "Неофициальная афиша";
         const title = document.createElement("h2");
-        const formattedDate = new Date(
-    concert.date + "T12:00:00"
-).toLocaleDateString("ru-RU", {
-    day: "numeric",
-    month: "long",
-    year: "numeric"
-});
-title.textContent = `${concert.city} · ${formattedDate}`;
-        item.appendChild(title);
+        title.id = item.id + "-title";
+        const city = document.createElement("span");
+        city.className = "concert-city";
+        city.textContent = concert.city;
+        const accessibleDate = document.createElement("span");
+        accessibleDate.className = "visually-hidden";
+        accessibleDate.textContent = " · " + formattedDate;
+        title.append(city, accessibleDate);
+        item.setAttribute("aria-labelledby", title.id);
         const venue = document.createElement("p");
+        venue.className = "concert-venue";
         venue.textContent = concert.venue;
-        item.appendChild(venue);
-const addressElement = document.createElement("a");
-addressElement.className = "address-link";
-addressElement.textContent = concert.address;
-addressElement.href = "https://yandex.ru/maps/?text=" +
-    encodeURIComponent(concert.address);
-addressElement.target = "_blank";
-addressElement.rel = "noopener noreferrer";
-addressElement.style.display = "block";
-venue.after(addressElement);
+        details.append(kicker, notice, title, venue);
+        const addressElement = document.createElement("a");
+        addressElement.className = "address-link";
+        addressElement.textContent = concert.address;
+        addressElement.href = "https://yandex.ru/maps/?text=" +
+            encodeURIComponent(concert.address);
+        addressElement.target = "_blank";
+        addressElement.rel = "noopener noreferrer";
+        details.appendChild(addressElement);
+        const actions = document.createElement("footer");
+        actions.className = "concert-actions";
+        const salesLabel = document.createElement("p");
+        salesLabel.className = "concert-sales-label";
+        salesLabel.textContent = "Билеты у продавцов";
+        actions.appendChild(salesLabel);
+        item.append(dateBlock, details, actions);
+        const timerLabel = document.createElement("p");
+        timerLabel.className = "timer-label";
+        timerLabel.id = item.id + "-timer-label";
+        timerLabel.textContent = "До открытия дверей";
+        details.appendChild(timerLabel);
         const timer = document.createElement("p");
         timer.className = "countdown";
-        item.appendChild(timer);
+        details.appendChild(timer);
         const timerGrid = document.createElement("div");
         timerGrid.className = "timer-grid";
+        timerGrid.setAttribute("role", "group");
+        timerGrid.setAttribute("aria-labelledby", timerLabel.id);
         timerGrid.innerHTML = `
             <div class="timer-box">
                 <span>--</span>
@@ -137,13 +188,14 @@ venue.after(addressElement);
                 <span>СЕКУНД</span>
             </div>
         `;
-        item.appendChild(timerGrid);
+        details.appendChild(timerGrid);
         function updateConcertTimer() {
             const numbers = item.querySelectorAll(".timer-box span:first-child");
             if (!concert.doorsAt) {
                 timer.hidden = false;
                 timer.textContent = "Время открытия дверей уточняется";
                 timerGrid.style.display = "none";
+                timerLabel.hidden = true;
                 return;
             }
             const targetDate = new Date(concert.doorsAt);
@@ -152,10 +204,12 @@ venue.after(addressElement);
                 timer.hidden = false;
                 timer.textContent = "KAI ANGEL CONCERT NOW";
                 timerGrid.style.display = "none";
+                timerLabel.hidden = true;
                 return;
             }
             timer.hidden = true;
             timerGrid.style.display = "grid";
+            timerLabel.hidden = false;
             const days = Math.floor(difference / 86400000);
             const hours = Math.floor((difference % 86400000) / 3600000);
             const minutes = Math.floor((difference % 3600000) / 60000);
@@ -180,7 +234,7 @@ venue.after(addressElement);
         sourceLink.target = "_blank";
         sourceLink.rel = "noopener noreferrer";
         source.appendChild(sourceLink);
-        item.appendChild(source);
+        details.appendChild(source);
 const ticketLinks = concert.city === "Санкт-Петербург"
     ? [
         {
@@ -209,7 +263,7 @@ ticketLinks.forEach(function(ticket) {
     ticketButton.textContent = ticket.name;
     ticketButton.target = "_blank";
     ticketButton.rel = "noopener noreferrer";
-    item.appendChild(ticketButton);
+    actions.appendChild(ticketButton);
 });
         return item;
     }
@@ -261,12 +315,15 @@ const backToPoster = document.getElementById("back-to-poster");
 const posterSection = document.querySelector(".tour-poster");
 
 function updateBackToPoster() {
-    backToPoster.hidden = document.body.scrollTop < 450;
+    backToPoster.hidden = posterSection.getBoundingClientRect().bottom >
+        document.body.getBoundingClientRect().top;
 }
 document.body.addEventListener("scroll", updateBackToPoster, {
     passive: true
 });
+window.addEventListener("resize", updateBackToPoster);
 backToPoster.addEventListener("click", function() {
+    document.getElementById("poster-title").focus({ preventScroll: true });
     posterSection.scrollIntoView({
         behavior: window.matchMedia(
             "(prefers-reduced-motion: reduce)"
@@ -284,8 +341,10 @@ const tripDate = document.getElementById("trip-date");
 const tripArrival = document.getElementById("trip-arrival");
 const arrivalDetails = document.getElementById("arrival-details");
 const arrivalRouteButton = document.getElementById("arrival-route");
+const arrivalError = document.getElementById("arrival-error");
+const arrivalPoint = document.getElementById("arrival-point");
 const arrivalPlaceholders = {
-    train: "Например, Курский вокзал",
+    train: "Название вокзала из билета",
     bus: "Например, Центральный автовокзал",
     plane: "Например, аэропорт Шереметьево"
 };
@@ -408,6 +467,10 @@ const tripDatePicker = typeof flatpickr === "function"
         monthSelectorType: "static"
     })
     : null;
+if (tripDatePicker && tripDatePicker.altInput) {
+    tripDatePicker.altInput.id = "trip-date-display";
+    document.querySelector('label[for="trip-date"]').htmlFor = "trip-date-display";
+}
 function suggestTripDate() {
     const concert = concerts.find(function(item) {
         return item.date === tripConcert.value;
@@ -431,8 +494,48 @@ function suggestTripDate() {
 }
 tripConcert.addEventListener("change", suggestTripDate);
 suggestTripDate();
+function cleanRoutePoint(value) {
+    return value.replaceAll("~", " ").replace(/\s+/g, " ").trim();
+}
+function createMapRouteUrl(startPoint, endPoint) {
+    const start = cleanRoutePoint(startPoint);
+    const end = cleanRoutePoint(endPoint);
+    if (!start || !end) {
+        return "";
+    }
+    const url = new URL("https://yandex.ru/maps/");
+    url.searchParams.set("mode", "routes");
+    url.searchParams.set("rtext", start + "~" + end);
+    return url.href;
+}
+function createIntercityRouteUrl(origin, concert) {
+    return createMapRouteUrl(origin, concert.city);
+}
+function invalidateTripResult() {
+    tripResult.hidden = true;
+    arrivalDetails.hidden = true;
+}
+tripOrigin.addEventListener("input", invalidateTripResult);
+tripConcert.addEventListener("change", invalidateTripResult);
+tripDate.addEventListener("change", function() {
+    (tripDatePicker?.altInput || tripDate).removeAttribute("aria-invalid");
+    invalidateTripResult();
+});
+tripTransport.addEventListener("change", invalidateTripResult);
+function createTripEntry(label, value, className) {
+    const entry = document.createElement("p");
+    entry.className = className;
+    const caption = document.createElement("span");
+    caption.className = "trip-entry-label";
+    caption.textContent = label;
+    const content = document.createElement("span");
+    content.className = "trip-entry-value";
+    content.textContent = value;
+    entry.append(caption, " ", content);
+    return entry;
+}
 tripBuild.addEventListener("click", function() {
-    const origin = tripOrigin.value.trim();
+    const origin = cleanRoutePoint(tripOrigin.value);
     const concert = concerts.find(function(item) {
         return item.date === tripConcert.value;
     });
@@ -445,7 +548,25 @@ tripBuild.addEventListener("click", function() {
     if (!concert) {
         return;
     }
+    const departure = new Date(tripDate.value + "T12:00:00");
+    const dateInput = tripDatePicker?.altInput || tripDate;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(tripDate.value) ||
+        !Number.isFinite(departure.getTime()) ||
+        formatTripDate(departure) !== tripDate.value ||
+        tripDate.value < tripDate.min || tripDate.value > tripDate.max) {
+        tripResult.hidden = false;
+        tripResult.textContent = "Выбери дату отправления в доступном диапазоне календаря.";
+        arrivalDetails.hidden = true;
+        dateInput.setAttribute("aria-invalid", "true");
+        dateInput.focus();
+        return;
+    }
+    dateInput.removeAttribute("aria-invalid");
+    const resultKicker = document.createElement("p");
+    resultKicker.className = "trip-result-kicker";
+    resultKicker.textContent = "Маршрутная выписка";
     const title = document.createElement("h3");
+    title.className = "trip-route-title";
     title.textContent = `${origin} → ${concert.city}`;
 const ticketServices = {
     train: {
@@ -513,47 +634,48 @@ if (tripTransport.value === "bus") {
 }
 if (tripTransport.value === "train") {
     ticketHint =
-        "На сайте РЖД выбери станции и дату отправления.";
+        "На сайте РЖД выбери станции и дату. Вокзал прибытия возьми из выбранного билета.";
 }
 const scheduleLink = document.createElement("a");
 scheduleLink.href = ticketUrl;
 scheduleLink.textContent = selectedService.text;
 scheduleLink.target = "_blank";
 scheduleLink.rel = "noopener noreferrer";
-    const venue = document.createElement("p");
-    venue.textContent = `Площадка: ${concert.venue}`;
-    const address = document.createElement("p");
-    address.textContent = `Адрес: ${concert.address}`;
-    const transport = document.createElement("p");
-    transport.textContent =
-        `Выбран транспорт: ${transportNames[tripTransport.value]}`;
+    const venue = createTripEntry("Площадка", concert.venue, "trip-venue");
+    const address = createTripEntry("Адрес", concert.address, "trip-address");
+    const transport = createTripEntry("Транспорт", transportNames[tripTransport.value], "trip-transport");
   const notice = document.createElement("p");
 notice.textContent = ticketHint;
+notice.className = "trip-notice";
     const mapLink = document.createElement("a");
-    mapLink.href = "https://yandex.ru/maps/?rtext=" +
-        encodeURIComponent(origin) + "~" +
-        encodeURIComponent(concert.address);
-    mapLink.textContent = "Открыть маршрут на карте";
+    mapLink.href = createIntercityRouteUrl(origin, concert);
+    mapLink.textContent = "Междугородний маршрут на карте";
     mapLink.target = "_blank";
     mapLink.rel = "noopener noreferrer";
-const departureDate = document.createElement("p");
-departureDate.textContent =
-    "Дата отправления: " +
+const departureDate = createTripEntry(
+    "Дата отправления",
     new Date(tripDate.value + "T12:00:00")
         .toLocaleDateString("ru-RU", {
             day: "numeric",
             month: "long",
             year: "numeric"
-        });
-    tripResult.replaceChildren(
+        }),
+    "trip-departure"
+);
+const resultActions = document.createElement("div");
+resultActions.className = "trip-result-actions";
+scheduleLink.className = "trip-service-link";
+mapLink.className = "trip-map-link";
+resultActions.append(scheduleLink, mapLink);
+tripResult.replaceChildren(
+    resultKicker,
     title,
+    departureDate,
+    transport,
     venue,
     address,
-    transport,
-    departureDate,
     notice,
-    mapLink,
-    scheduleLink
+    resultActions
 );
 const copyTripButton = document.createElement("button");
 copyTripButton.type = "button";
@@ -574,30 +696,42 @@ copyTripButton.addEventListener("click", async function() {
         copyTripButton.textContent = "Не удалось скопировать";
     }
 });
-tripResult.appendChild(copyTripButton);
+resultActions.appendChild(copyTripButton);
 tripResult.hidden = false;
 arrivalDetails.hidden = false;
 arrivalDetails.open = false;
 });
 arrivalRouteButton.addEventListener("click", function() {
-    const arrival = tripArrival.value.trim();
-    if (!arrival) {
-        tripArrival.focus();
-        return;
-    }
     const concert = concerts.find(function(item) {
         return item.date === tripConcert.value;
     });
     if (!concert) {
         return;
     }
-    const startPoint = concert.city + ", " + arrival;
-    const mapUrl =
-        "https://yandex.ru/maps/?rtext=" +
-        encodeURIComponent(startPoint) +
-        "~" +
-        encodeURIComponent(concert.address);
-    window.open(mapUrl, "_blank", "noopener,noreferrer");
+    const route = ArrivalRouting.route(tripArrival.value, concert);
+    if (route.error) {
+        arrivalError.textContent = route.error;
+        if (route.searchUrl) {
+            const search = document.createElement("a");
+            search.href = route.searchUrl;
+            search.target = "_blank";
+            search.rel = "noopener noreferrer";
+            search.textContent = "Найти место в Яндекс Картах";
+            arrivalError.append(" ", search);
+        }
+        arrivalError.hidden = false;
+        arrivalPoint.hidden = true;
+        tripArrival.setAttribute("aria-invalid", "true");
+        tripArrival.focus();
+        return;
+    }
+    arrivalError.hidden = true;
+    tripArrival.removeAttribute("aria-invalid");
+    arrivalPoint.textContent = route.origin.name + ", " + concert.city +
+        " → " + route.destination.venue + ", " + route.destination.address +
+        (route.origin.airport ? ". Используется общая точка аэропорта: проверь свой терминал в Картах." : ". Проверь подход к площадке в Картах.");
+    arrivalPoint.hidden = false;
+    window.open(route.url, "_blank", "noopener,noreferrer");
 routeReviewed.hidden = false;
 routeTiming.hidden = true;
 });
@@ -622,6 +756,33 @@ const arrivalDateTimePicker = typeof flatpickr === "function"
         }
     })
     : null;
+if (arrivalDateTimePicker && arrivalDateTimePicker.altInput) {
+    arrivalDateTimePicker.altInput.id = "arrival-time-display";
+    arrivalDateTimePicker.altInput.setAttribute("aria-describedby", "arrival-reference");
+    document.querySelector('label[for="arrival-time"]').htmlFor = "arrival-time-display";
+}
+const arrivalReference = document.getElementById("arrival-reference");
+function updateArrivalReference() {
+    const concert = concerts.find(function(item) {
+        return item.date === tripConcert.value;
+    });
+    if (!concert || !concert.doorsAt) {
+        arrivalReference.textContent = "Время для расчёта уточняется. Проверь расписание у организатора.";
+        return;
+    }
+    const reference = new Date(concert.doorsAt).toLocaleString("ru-RU", {
+        timeZone: "Europe/Moscow",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+    });
+    arrivalReference.textContent = "Расчётный ориентир: " + reference +
+        " МСК. Время из данных сайта; оно не подтверждает официальное открытие дверей. Уточни расписание у организатора.";
+}
+tripConcert.addEventListener("change", updateArrivalReference);
+updateArrivalReference();
 function formatDuration(totalMinutes) {
     const days = Math.floor(totalMinutes / 1440);
     const hours = Math.floor((totalMinutes % 1440) / 60);
@@ -695,6 +856,9 @@ const routeTiming = document.getElementById("route-timing");
 function resetRouteReview() {
     routeReviewed.hidden = true;
     routeTiming.hidden = true;
+    arrivalError.hidden = true;
+    arrivalPoint.hidden = true;
+    tripArrival.removeAttribute("aria-invalid");
 }
 routeReviewed.addEventListener("click", function() {
     routeTiming.hidden = false;
@@ -702,7 +866,15 @@ routeReviewed.addEventListener("click", function() {
     calculateArrivalTime();
 });
 tripArrival.addEventListener("input", resetRouteReview);
-tripConcert.addEventListener("change", resetRouteReview);
+let arrivalConcertCity = concerts.find(item => item.date === tripConcert.value)?.city;
+tripConcert.addEventListener("change", function() {
+    const city = concerts.find(item => item.date === tripConcert.value)?.city;
+    if (city !== arrivalConcertCity) {
+        tripArrival.value = "";
+    }
+    arrivalConcertCity = city;
+    resetRouteReview();
+});
 tripBuild.addEventListener("click", resetRouteReview);
 const transportPicker = document.getElementById("transport-picker");
 const transportPickerValue = document.getElementById("transport-picker-value");
