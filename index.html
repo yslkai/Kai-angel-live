@@ -3,10 +3,11 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; script-src-attr 'none'; style-src 'self' https://fonts.googleapis.com; style-src-attr 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'; worker-src 'none'; upgrade-insecure-requests">
     <title>KAI ANGEL LIVE</title>
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="shortcut icon" href="favicon.ico">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/themes/dark.css">
+<link rel="stylesheet" href="vendor/flatpickr/4.6.13/dist/themes/dark.css">
     <link rel="stylesheet" href="style.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="KAI ANGEL LIVE — афиша концертов Kai Angel в Москве и Санкт-Петербурге. Даты, площадки, обратный отсчёт и ссылки на билеты.">
@@ -83,7 +84,7 @@
         <div class="travel-fields">
             <div class="travel-field">
                 <label for="trip-origin">Откуда едешь?</label>
-                <input id="trip-origin" type="text" placeholder="Например, Старый Оскол" autocomplete="address-level2">
+                <input id="trip-origin" type="text" maxlength="120" placeholder="Например, Старый Оскол" autocomplete="address-level2">
             </div>
             <div class="travel-field">
                 <span id="trip-concert-label" class="travel-label">Какой концерт?</span>
@@ -125,7 +126,7 @@
         <p id="arrival-reference" class="roadbook-reference"></p>
         <div class="travel-field">
             <label for="trip-arrival">На какой вокзал или аэропорт прибываешь?</label>
-            <input id="trip-arrival" type="text" placeholder="Название вокзала или аэропорта из билета" aria-describedby="arrival-error">
+            <input id="trip-arrival" type="text" maxlength="240" placeholder="Название вокзала или аэропорта из билета" aria-describedby="arrival-error">
             <p id="arrival-error" class="roadbook-error" role="alert" hidden>Укажи вокзал или аэропорт прибытия.</p>
             <p id="arrival-point" class="roadbook-reference" role="status" hidden></p>
         </div>
@@ -141,11 +142,11 @@
             <div class="arrival-time-fields">
                 <div class="travel-field">
                     <label for="arrival-travel-minutes">Дорога до площадки (мин.)</label>
-                    <input id="arrival-travel-minutes" type="number" min="0" step="5" value="60">
+                    <input id="arrival-travel-minutes" type="number" min="0" max="10080" step="5" value="60">
                 </div>
                 <div class="travel-field">
                     <label for="arrival-buffer-minutes">Запас времени (мин.)</label>
-                    <input id="arrival-buffer-minutes" type="number" min="0" step="5" value="30">
+                    <input id="arrival-buffer-minutes" type="number" min="0" max="10080" step="5" value="30">
                 </div>
             </div>
             <p id="arrival-time-result" aria-live="polite"></p>
@@ -159,8 +160,8 @@
     <p>По вопросам использования материалов: <a href="https://github.com/yslkai/Kai-angel-live/issues" target="_blank" rel="noopener noreferrer">GitHub Issues</a>.</p>
     <p>Даты концертов могут измениться. Проверяйте актуальную информацию по ссылкам на источники.</p>
 </footer>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/l10n/ru.js"></script>
+<script src="vendor/flatpickr/4.6.13/dist/flatpickr.min.js"></script>
+<script src="vendor/flatpickr/4.6.13/dist/l10n/ru.js"></script>
 <script src="arrival-routing.js"></script>
 <script src="script.js"></script>
 </body>

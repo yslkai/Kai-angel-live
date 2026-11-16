@@ -249,6 +249,9 @@ const ArrivalRouting = (() => {
         return 6371 * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
     }
     function resolve(value, city) {
+        if (value.length > 240) {
+            return { error: "Название места прибытия должно быть не длиннее 240 символов." };
+        }
         const input = value.trim();
         if (!input) {
             return { error: "Укажи вокзал или аэропорт прибытия." };

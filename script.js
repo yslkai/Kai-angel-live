@@ -170,24 +170,16 @@ if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
         timerGrid.className = "timer-grid";
         timerGrid.setAttribute("role", "group");
         timerGrid.setAttribute("aria-labelledby", timerLabel.id);
-        timerGrid.innerHTML = `
-            <div class="timer-box">
-                <span>--</span>
-                <span>ДНЕЙ</span>
-            </div>
-            <div class="timer-box">
-                <span>--</span>
-                <span>ЧАСОВ</span>
-            </div>
-            <div class="timer-box">
-                <span>--</span>
-                <span>МИНУТ</span>
-            </div>
-            <div class="timer-box">
-                <span>--</span>
-                <span>СЕКУНД</span>
-            </div>
-        `;
+        for (const label of ["ДНЕЙ", "ЧАСОВ", "МИНУТ", "СЕКУНД"]) {
+            const box = document.createElement("div");
+            box.className = "timer-box";
+            const number = document.createElement("span");
+            number.textContent = "--";
+            const caption = document.createElement("span");
+            caption.textContent = label;
+            box.append(number, caption);
+            timerGrid.appendChild(box);
+        }
         details.appendChild(timerGrid);
         function updateConcertTimer() {
             const numbers = item.querySelectorAll(".timer-box span:first-child");
@@ -339,6 +331,7 @@ const tripBuild = document.getElementById("trip-build");
 const tripResult = document.getElementById("trip-result");
 const tripDate = document.getElementById("trip-date");
 const tripArrival = document.getElementById("trip-arrival");
+const tripInputLimits = Object.freeze({ origin: 120, minutes: 10080 });
 const arrivalDetails = document.getElementById("arrival-details");
 const arrivalRouteButton = document.getElementById("arrival-route");
 const arrivalError = document.getElementById("arrival-error");
@@ -535,6 +528,13 @@ function createTripEntry(label, value, className) {
     return entry;
 }
 tripBuild.addEventListener("click", function() {
+    if (tripOrigin.value.length > tripInputLimits.origin) {
+        tripOrigin.focus();
+        tripResult.hidden = false;
+        tripResult.textContent = "Название города должно быть не длиннее 120 символов.";
+        arrivalDetails.hidden = true;
+        return;
+    }
     const origin = cleanRoutePoint(tripOrigin.value);
     const concert = concerts.find(function(item) {
         return item.date === tripConcert.value;
@@ -582,20 +582,28 @@ const ticketServices = {
         text: "Найти авиабилет"
     }
 };
-const selectedService = ticketServices[tripTransport.value];
+const selectedService = Object.prototype.hasOwnProperty.call(ticketServices, tripTransport.value)
+    ? ticketServices[tripTransport.value]
+    : null;
+if (!selectedService) {
+    tripResult.hidden = false;
+    tripResult.textContent = "Выбери транспорт из списка.";
+    arrivalDetails.hidden = true;
+    return;
+}
 const normalizedOrigin = origin
     .toLowerCase()
     .replaceAll("ё", "е")
     .replace(/\s+/g, " ")
     .trim();
-const airportCodes = {
-    "москва": "MOW",
-    "санкт-петербург": "LED",
-    "казань": "KZN",
-    "екатеринбург": "SVX",
-    "новосибирск": "OVB",
-    "сочи": "AER"
-};
+const airportCodes = new Map([
+    ["москва", "MOW"],
+    ["санкт-петербург", "LED"],
+    ["казань", "KZN"],
+    ["екатеринбург", "SVX"],
+    ["новосибирск", "OVB"],
+    ["сочи", "AER"]
+]);
 const busRoutes = {
     "старый оскол|Москва":
         "https://bus.tutu.ru/raspisanie/gorod_Staryj-Oskol/gorod_Moskva/",
@@ -605,8 +613,8 @@ const busRoutes = {
 let ticketUrl = selectedService.url;
 let ticketHint = "";
 if (tripTransport.value === "plane") {
-    const fromCode = airportCodes[normalizedOrigin];
-    const toCode = airportCodes[concert.city.toLowerCase()];
+    const fromCode = airportCodes.get(normalizedOrigin);
+    const toCode = airportCodes.get(concert.city.toLowerCase());
 
     if (fromCode && toCode) {
         const day = tripDate.value.slice(8, 10);
@@ -813,10 +821,12 @@ function calculateArrivalTime() {
         !Number.isFinite(travelMinutes) ||
         !Number.isFinite(bufferMinutes) ||
         travelMinutes < 0 ||
-        bufferMinutes < 0
+        bufferMinutes < 0 ||
+        travelMinutes > tripInputLimits.minutes ||
+        bufferMinutes > tripInputLimits.minutes
     ) {
         arrivalTimeResult.textContent =
-            "Проверь дату и количество минут.";
+            "Проверь дату и количество минут: допустимо от 0 до 10080.";
         return;
     }
     if (minutesLeft <= 0) {
@@ -885,66 +895,80 @@ const transportOptions = [
     {
         value: "train",
         label: "Поезд",
-        icon: `
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="7" y="3" width="10" height="12" rx="2"></rect>
-                <path d="M9 7h2"></path>
-                <path d="M13 7h2"></path>
-                <path d="M8 15h8"></path>
-                <path d="M9 19l-2 2"></path>
-                <path d="M15 19l2 2"></path>
-                <circle cx="9" cy="12" r="1"></circle>
-                <circle cx="15" cy="12" r="1"></circle>
-            </svg>
-        `
+        icon: [
+            ["rect", { x: "7", y: "3", width: "10", height: "12", rx: "2" }],
+            ["path", { d: "M9 7h2" }],
+            ["path", { d: "M13 7h2" }],
+            ["path", { d: "M8 15h8" }],
+            ["path", { d: "M9 19l-2 2" }],
+            ["path", { d: "M15 19l2 2" }],
+            ["circle", { cx: "9", cy: "12", r: "1" }],
+            ["circle", { cx: "15", cy: "12", r: "1" }]
+        ]
     },
     {
         value: "bus",
         label: "Автобус",
-        icon: `
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="2" y="5" width="20" height="13" rx="2"></rect>
-                <path d="M2 12h20"></path>
-                <path d="M9 5v7"></path>
-                <path d="M16 5v7"></path>
-                <circle cx="7" cy="18" r="2"></circle>
-                <circle cx="18" cy="18" r="2"></circle>
-            </svg>
-        `
+        icon: [
+            ["rect", { x: "2", y: "5", width: "20", height: "13", rx: "2" }],
+            ["path", { d: "M2 12h20" }],
+            ["path", { d: "M9 5v7" }],
+            ["path", { d: "M16 5v7" }],
+            ["circle", { cx: "7", cy: "18", r: "2" }],
+            ["circle", { cx: "18", cy: "18", r: "2" }]
+        ]
     },
     {
         value: "plane",
         label: "Самолёт",
-        icon: `
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path
-                    d="M12 2
+        icon: [
+            ["path", {
+                d: `M12 2
                        C11.2 2 10.6 2.7 10.6 3.5
                        V10 L4 14 V16 L10.6 14
                        V18 L8.6 19.5 V21
                        L12 20 L15.4 21 V19.5
                        L13.4 18 V14 L20 16 V14
                        L13.4 10 V3.5
-                       C13.4 2.7 12.8 2 12 2Z"
-                    fill="currentColor"
-                    stroke="none"
-                ></path>
-            </svg>
-        `
+                       C13.4 2.7 12.8 2 12 2Z`,
+                fill: "currentColor",
+                stroke: "none"
+            }]
+        ]
     }
-]
+];
+function setTransportContent(container, transport, label, labelClass = "") {
+    const icon = document.createElement("span");
+    icon.className = "transport-icon";
+    if (transport) {
+        const namespace = "http://www.w3.org/2000/svg";
+        const svg = document.createElementNS(namespace, "svg");
+        svg.setAttribute("viewBox", "0 0 24 24");
+        svg.setAttribute("aria-hidden", "true");
+        for (const [tag, attributes] of transport.icon) {
+            const shape = document.createElementNS(namespace, tag);
+            for (const [name, value] of Object.entries(attributes)) {
+                shape.setAttribute(name, value);
+            }
+            svg.appendChild(shape);
+        }
+        icon.appendChild(svg);
+    }
+    const text = document.createElement("span");
+    if (labelClass) {
+        text.className = labelClass;
+    }
+    text.textContent = label;
+    container.replaceChildren(icon, text);
+}
 Array.from(tripTransport.options).forEach(function(option) {
     const button = document.createElement("button");
 const transportInfo = transportOptions.find(function(item) {
     return item.value === option.value;
 });
-const icon = transportInfo ? transportInfo.icon : "";
     button.type = "button";
     button.className = "concert-option transport-option-button";
-button.innerHTML = `
-    <span class="transport-icon">${icon}</span>
-    <span class="transport-option-label">${option.textContent}</span>
-`;
+setTransportContent(button, transportInfo, option.textContent, "transport-option-label");
     button.addEventListener("click", function() {
         tripTransport.value = option.value;
         tripTransport.dispatchEvent(
@@ -961,10 +985,7 @@ function updateTransportPicker() {
         return item.value === tripTransport.value;
     });
     if (selectedTransport) {
-        transportPickerValue.innerHTML = `
-            <span class="transport-icon">${selectedTransport.icon}</span>
-            <span>${selectedTransport.label}</span>
-        `;
+        setTransportContent(transportPickerValue, selectedTransport, selectedTransport.label);
     } else {
         transportPickerValue.textContent = "Выбери транспорт";
     }
